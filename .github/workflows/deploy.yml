@@ -3,7 +3,8 @@ name: Deploy to Xserver Static
 on:
   push:
     branches:
-      - main  # mainブランチにプッシュされたときに実行
+      - main  # mainブランチにプッシュされたときに自動実行
+  workflow_dispatch:  # 手動実行のトリガー
 
 jobs:
   deploy:
@@ -23,6 +24,9 @@ jobs:
       run: npm install
 
     - name: Build the project
+      env:
+        MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+        MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
       run: npm run build
 
     - name: Install lftp
