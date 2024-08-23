@@ -40,9 +40,9 @@ jobs:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      run: |
+      rrun: |
         lftp -e "
         open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
-        mirror -R --ignore-errors ./dist /
+        mirror -R ./dist /
         bye
-        "
+        " || true
