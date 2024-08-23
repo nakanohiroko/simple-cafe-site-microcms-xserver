@@ -31,28 +31,19 @@ jobs:
         PUBLIC_MICROCMS_API_KEY: ${{ secrets.PUBLIC_MICROCMS_API_KEY }}
         PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
       run: npm run build
-    
-    - name: Deploy to XServer Static
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+
+    - name: Install lftp
+      run: sudo apt-get install -y lftp
+
+    - name: Deploy to Xserver Static
       env:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist
-        server-dir: /
-        protocol: ftp
-
-    # - name: Install lftp
-    #   run: sudo apt-get install -y lftp
-
-    # - name: Deploy to Xserver Static
-    #   env:
-    #     FTP_SERVER: ${{ secrets.FTP_SERVER }}
-    #     FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-    #     FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-    #   run: |
-    #     lftp -e "
-    #     open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
-    #     mirror -R ./dist /
-    #     bye
-    #     "
+        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      run: |
+        lftp -e "
+        ls
+        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
+        mirror -R ./dist /
+        bye
+        "
