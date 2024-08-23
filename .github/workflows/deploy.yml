@@ -42,8 +42,8 @@ jobs:
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       run: |
         lftp -e "
-        ls
         open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
+        ls
         mirror -R ./dist /
         bye
         "
