@@ -43,7 +43,7 @@ jobs:
       run: |
         lftp -e "
         open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
-        ls
+        pwd
         mirror -R ./dist /
         bye
         "
