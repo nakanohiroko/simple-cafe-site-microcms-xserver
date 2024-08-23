@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main  # mainブランチにプッシュされたときに自動実行
-  workflow_dispatch:  # 手動実行のトリガー
+  workflow_dispatch:  # 手動実行
   repository_dispatch:  # カスタムイベントでの実行
     types: [microcms]
 
@@ -31,18 +31,28 @@ jobs:
         PUBLIC_MICROCMS_API_KEY: ${{ secrets.PUBLIC_MICROCMS_API_KEY }}
         PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
       run: npm run build
-
-    - name: Install lftp
-      run: sudo apt-get install -y lftp
-
-    - name: Deploy to Xserver Static
+    
+    - name: Deploy to XServer Static
+      uses: SamKirkland/FTP-Deploy-Action@4.4.0
       env:
-        FTP_SERVER: ${{ secrets.FTP_SERVER }}
-        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-      run: |
-        lftp -e "
-        open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
-        mirror -R ./dist /
-        bye
-        "
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./dist
+        server-dir: /
+        protocol: ftp
+
+    # - name: Install lftp
+    #   run: sudo apt-get install -y lftp
+
+    # - name: Deploy to Xserver Static
+    #   env:
+    #     FTP_SERVER: ${{ secrets.FTP_SERVER }}
+    #     FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+    #     FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+    #   run: |
+    #     lftp -e "
+    #     open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
+    #     mirror -R ./dist /
+    #     bye
+    #     "
