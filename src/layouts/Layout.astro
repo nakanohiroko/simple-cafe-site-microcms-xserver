@@ -12,6 +12,7 @@ export interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  canonicalUrl?: string;
 }
 
 const props = Astro.props;
@@ -21,6 +22,7 @@ const title = props.title ? `${props.title} | ${BASE_TITLE}` : BASE_TITLE;
 const BASE_DESCRIPTION =
   "心地よい空間でくつろぎながら、美味しいコーヒーと軽食をお楽しみいただけるRELAX CAFEへようこそ。";
 const description = props.description ?? BASE_DESCRIPTION;
+const canonicalUrl = props.canonicalUrl ?? import.meta.env.PUBLIC_SITE_URL;
 ---
 
 <!DOCTYPE html>
@@ -31,11 +33,13 @@ const description = props.description ?? BASE_DESCRIPTION;
       description={description}
       noindex={props.noindex ?? false}
       charset="UTF-8"
+      canonical={canonicalUrl}
       openGraph={{
         basic: {
           title,
           type: "website",
           image: `${import.meta.env.PUBLIC_SITE_URL}/og.png`,
+          url: canonicalUrl,
         },
       }}
       extend={{
