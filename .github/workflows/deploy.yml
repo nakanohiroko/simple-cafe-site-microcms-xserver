@@ -35,7 +35,7 @@ jobs:
     - name: Install lftp
       run: sudo apt-get install -y lftp
 
-    - name: Deploy to Xserver Static
+    - name: Clean up server and Deploy to Xserver Static
       env:
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -43,6 +43,7 @@ jobs:
       run: |
         lftp -e "
         open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
+        find . -type f ! -name '.htaccess' -delete
         mirror -R ./dist /
         bye
         " || true
