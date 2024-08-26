@@ -43,7 +43,9 @@ jobs:
       run: |
         lftp -e "
         open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
-        find . -type f ! -name '.htaccess' -delete
-        mirror -R ./dist /
+        get .htaccess -o .htaccess  # .htaccessをローカルにダウンロード
+        glob -a rm -rf *  # サーバー上の全ファイルを削除
+        put .htaccess  # .htaccessを再アップロード
+        mirror -R --ignore-errors ./dist /
         bye
         " || true
