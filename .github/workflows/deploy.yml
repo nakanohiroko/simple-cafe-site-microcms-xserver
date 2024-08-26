@@ -43,9 +43,6 @@ jobs:
       run: |
         lftp -c "
         open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
-        get .htaccess -o .htaccess  # .htaccessをローカルにダウンロード
-        glob -a rm -rf *  # サーバー上の全ファイルを削除
-        put .htaccess  # .htaccessを再アップロード
-        mirror -R ./dist /  # 新しいファイルをアップロード
+        mirror -R --delete ./dist /  # ローカルとリモートのディレクトリを同期し、不要なファイルを削除
         bye
         " || true
