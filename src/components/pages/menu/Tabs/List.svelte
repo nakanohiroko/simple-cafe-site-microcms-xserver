@@ -4,6 +4,10 @@
 
   export let items: Pick<Menu, "name" | "price" | "description" | "image">[] =
     [];
+
+  function formatPrice(price: number): string {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 </script>
 
 <ul class="space-y-10 px-2">
@@ -11,7 +15,7 @@
     <li>
       <div class="flex items-end justify-between">
         <div>{item.name}</div>
-        <div>￥{item.price}</div>
+        <div>￥{formatPrice(item.price)}</div>
       </div>
       <div class="text-sm">{item.description}</div>
       <div class="mt-4 max-w-[15rem]">

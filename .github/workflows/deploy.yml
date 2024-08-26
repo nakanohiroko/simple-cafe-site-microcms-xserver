@@ -3,9 +3,9 @@ name: Deploy to Xserver Static
 on:
   push:
     branches:
-      - main  # mainブランチにプッシュされたときに自動実行
-  workflow_dispatch:  # 手動実行
-  repository_dispatch:  # カスタムイベントでの実行
+      - main
+  workflow_dispatch:
+  repository_dispatch:
     types: [microcms]
 
 jobs:
