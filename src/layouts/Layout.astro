@@ -12,6 +12,7 @@ export interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  nofollow?: boolean;
   canonicalUrl?: string;
 }
 
@@ -31,7 +32,8 @@ const canonicalUrl = props.canonicalUrl ?? import.meta.env.PUBLIC_SITE_URL;
     <SEO
       title={title}
       description={description}
-      noindex={props.noindex ?? false}
+      noindex={props.noindex ?? true}
+      nofollow={props.nofollow ?? true}
       charset="UTF-8"
       canonical={canonicalUrl}
       openGraph={{
