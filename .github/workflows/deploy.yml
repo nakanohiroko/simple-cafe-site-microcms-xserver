@@ -41,11 +41,11 @@ jobs:
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
       run: |
-        lftp -e "
+        lftp -c "
         open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_SERVER
         get .htaccess -o .htaccess  # .htaccessをローカルにダウンロード
         glob -a rm -rf *  # サーバー上の全ファイルを削除
         put .htaccess  # .htaccessを再アップロード
-        mirror -R --ignore-errors ./dist /
+        mirror -R ./dist /  # 新しいファイルをアップロード
         bye
         " || true
